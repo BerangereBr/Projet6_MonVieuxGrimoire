@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const Book = require('./models/Book');
+const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
 mongoose.connect('mongodb+srv://brunberangere:formationAPIprojet6@cluster0.ipmtzl9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
     {
@@ -20,38 +21,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.post('/api/book', (req, res, next) => {
-    delete req.body._id;
-    const book = new Book({
-        ...req.body
-    });
-    bokk.save()
-        .then(() => res.status(201).json({ message: 'Livre enregistré !' }))
-        .catch(error => res.status(400).json({ error }));
-});
-
-app.put('/api/book/:id', (req, res, next) => {
-    Book.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Livre modifié !' }))
-        .catch(error => res.status(400).json({ error }));
-});
-
-app.delete('/api/book/:id', (req, res, next) => {
-    Book.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Livre supprimé !' }))
-        .catch(error => res.status(400).json({ error }));
-});
-
-app.get('/api/book/:id', (req, res, next) => {
-    Book.findOne({ _id: req.params.id })
-        .then(book => res.status(200).json(book))
-        .catch(error => res.status(404).json({ error }));
-});
-
-app.get('/api/book', (req, res, next) => {
-    Book.find()
-        .then(books => res.status(200).json(books))
-        .catch(error => res.status(400).json({ error }));
-});
+app.use('/APP_ROUTES', stuffRoutes);
+app.use('/APP_ROUTES', userRoutes);
 
 module.exports = app;
