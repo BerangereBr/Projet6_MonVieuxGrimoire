@@ -10,8 +10,6 @@ exports.createBook = (req, res, next) => {
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     });
-    console.log(book);
-
     book.save()
         .then(() => {
             console.log('Livre enregistré avec succès !');
@@ -64,8 +62,6 @@ exports.deleteBook = (req, res, next) => {
 exports.getOneBook = (req, res, next) => {
     Book.findOne({ _id: req.params.id })
         .then(book => {
-            console.log(book);
-
             res.status(200).json(book)
         }
         )
@@ -107,7 +103,6 @@ exports.bestRating = (req, res, next) => {
             const averageRatingBooks = books.sort((a, b) => b.averageRating - a.averageRating)
             const bestRating = averageRatingBooks.splice(0, 3)
             res.status(200).json(bestRating)
-
         })
         .catch(error => res.status(400).json({ error }));
 }

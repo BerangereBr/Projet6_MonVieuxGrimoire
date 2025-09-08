@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+require('dotenv').config()
 
 const bookRoutes = require('./routes/book');
 const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://brunberangere:formationAPIprojet6@cluster0.ipmtzl9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+mongoose.connect(process.env.DATABASE_URL,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
