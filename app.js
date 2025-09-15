@@ -27,10 +27,7 @@ app.use((req, res, next) => {
 
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);
-app.use('/images', (req, res, next) => {
-    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-    next();
-});
+app.use('/images', helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
