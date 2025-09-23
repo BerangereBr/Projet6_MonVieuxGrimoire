@@ -76,7 +76,7 @@ exports.getAllBooks = (req, res, next) => {
 
 exports.bookRating = (req, res, next) => {
     const rating = req.body.rating;
-    const userId = req.body.userId
+    const userId = req.auth.userId
     Book.findOne({ _id: req.params.id })
         .then(book => {
             if (!book) {
