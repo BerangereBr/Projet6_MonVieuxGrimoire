@@ -32,6 +32,10 @@ exports.modifyBook = (req, res, next) => {
             if (book.userId !== req.auth.userId) {
                 res.status(401).json({ message: 'Not authorized' });
             } else {
+                const filename = book.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, (err) => {
+                    if (err) console.error('error suppression', err)
+                })
                 Book.updateOne({ _id: req.params.id }, { ...changeBook, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Livre modifié !' }))
                     .catch(error => res.status(401).json({ error }))
@@ -87,7 +91,7 @@ exports.bookRating = (req, res, next) => {
                 } else {
                     book.ratings.push({ userId, grade: rating })
                     const grade = book.ratings.map(data => data.grade)
-                    book.averageRating = grade.reduce((gradeSum, grade) => gradeSum + grade, 0) / grade.length
+                    book.averageRating = Math.round(grade.reduce((gradeSum, grade) => gradeSum + grade, 0) / grade.length)
                     return book.save()
                         .then(updatebook => res.status(200).json(updatebook))
                         .catch(error => res.status(400).json({ error }));
